@@ -10,7 +10,7 @@ The goal was to make simple chat application based on OTP framework that impleme
 - put everything together into application
 
 # References
-Cesarini F., Vinoski S., Designing for Scalability with Erlang/OTP, O'Reilly
-Cesarini F., Thompson S., Erlang Programming, O'Reilly
-https://learnyousomeerlang.com/content
-Erlangator - Ericsson course
+  Cesarini F., Vinoski S., Designing for Scalability with Erlang/OTP, O'Reilly
+  Cesarini F., Thompson S., Erlang Programming, O'Reilly
+  https://learnyousomeerlang.com/content
+  Erlangator - Ericsson course
