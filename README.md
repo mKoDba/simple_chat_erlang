@@ -6,8 +6,8 @@ The goal was to make simple chat application based on OTP framework that impleme
 
 ## TODO
 - implement sending messages through sockets
-- implement message, warning logging
-- put everything together into application
+- ~~implement message, warning logging~~
+- ~~put everything together into application~~
 
 ## References
   - Cesarini F., Vinoski S., Designing for Scalability with Erlang/OTP, O'Reilly
