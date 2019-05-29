@@ -7,7 +7,7 @@
 -behaviour(supervisor).
 
 %% API 
--export([start/1]).
+-export([start/0]).
 
 %% Callback
 -export([init/1]).
@@ -16,31 +16,35 @@
 -define(SHUTDOWNTIME, 5000).
 -define(SERVER, chat_server).
 -define(MSG_HANDLER, message_handler).
+-define(LOG_HANDLER, log_udp_server).
+
 -define(MAXRESTART, 60).
 -define(MAXTIME, 3600). %% in seconds
 %% ====================================================================
 %% API functions
 %% ====================================================================
-start(SrvName) ->
-	supervisor:start_link({local, ?MODULE}, ?MODULE, [SrvName]).
+start() ->
+	supervisor:start_link({local, ?MODULE}, ?MODULE, []).
 
 
 %% ====================================================================
 %% Callback functions
 %% ====================================================================
 
-init([SrvName]) ->
+init([]) ->
 	%% {Name, StartFunction, 
 	%% RestartType, ShutdownTime, ProcessType, Modules}
-	Chat_server = {?SERVER, {?SERVER, start, [SrvName]},
+	ChatServer = {?SERVER, {?SERVER, start, []},
 				   permanent, ?SHUTDOWNTIME, worker, dynamic},
 	
-	Broadcast_proc = {?MSG_HANDLER, {?MSG_HANDLER, start, []},
+	MsgHandler = {?MSG_HANDLER, {?MSG_HANDLER, start, []},
 				   permanent, ?SHUTDOWNTIME, worker, dynamic},
 	
+	LogHandler = {?LOG_HANDLER, {?LOG_HANDLER, start, []},
+				   permanent, ?SHUTDOWNTIME, worker, dynamic},
 	%% {RestartType, MaxRestart, MaxTime}
 	RestartTuple = {one_for_all, ?MAXRESTART, ?MAXTIME},
 	
-	SupervisorSpecs = {RestartTuple, [Chat_server, Broadcast_proc]},
+	SupervisorSpecs = {RestartTuple, [LogHandler, ChatServer, MsgHandler]},
 	{ok, SupervisorSpecs}.
 	

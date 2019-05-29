@@ -32,12 +32,8 @@ handle_call(_,_,S) ->
 	
 %% get all pids (keys) from dict and broadcast message to each client subscribed to chat server
 broadcast_msg(From, Msg, Clients) ->
+	{ok, AppName} = application:get_env(app_name),
 	KeysList = orddict:fetch_keys(Clients),
+	log_udp_server:log({broadcast, From, Msg, AppName, trace, chat_server:format_time()}),
 	lists:foreach(fun(Client) -> chat_client:receive_msg(Client, From, Msg) end, KeysList).
-
-%% za tcp/udp verziju:
-%%
-%%broadcast_msg(_From, Msg, Clients) ->
-%%	Sockets = orddict:fetch_keys(Clients),
-%%	lists:foreach(fun(Socket) -> gen_tcp:send(Socket, Msg) end, Sockets).
 
